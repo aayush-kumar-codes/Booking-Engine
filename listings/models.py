@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 
 class Listing(models.Model):
@@ -74,3 +76,32 @@ class BookingInfo(models.Model):
             obj = self.hotel_room_type
             
         return f'{obj} {self.price}'
+
+
+class MakeReservations(models.Model):
+    hotel = models.ForeignKey(
+        HotelRoom,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='hotel',
+    )
+    booking = models.ForeignKey(
+        BookingInfo,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='booking',
+    )
+    user=models.ForeignKey(
+        User,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='guest',
+    )
+    persons=models.PositiveIntegerField(default=1)
+    check_in = models.DateField()
+    check_out = models.DateField()
+    last_updated = models.DateTimeField(auto_now=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True)
